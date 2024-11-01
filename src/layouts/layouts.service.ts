@@ -21,11 +21,18 @@ import {
 
 @Injectable()
 export class LayoutsService {
+  private db: Firestore = null;
+  private layoutId: string = null;
+
   constructor(
     private configService: ConfigService,
     private firestoreService: FirestoreService,
-  )
-  private db: Firestore = null;
+  ) {
+    this.layoutId = this.configService.get('LAYOUT_ID');
+    this.db = this.firestoreService.getDb();
+    console.log('LayoutsService.constructor', this.db?.app.name, this.layoutId);
+  }
+
   create(createLayoutDto: CreateLayoutDto) {
     return 'This action adds a new layout';
   }
@@ -46,9 +53,9 @@ export class LayoutsService {
     return `This action removes a #${id} layout`;
   }
 
-  async reset(layoutId: string) {
+  async reset() {
     const querySnapshot = await getDocs(
-      collection(db, `layouts/${layoutId}/devices`),
+      collection(this.db, `layouts/${this.layoutId}/devices`),
     );
     querySnapshot.forEach((doc) => {
       updateDoc(doc.ref, {
@@ -64,7 +71,9 @@ export class LayoutsService {
     // );
   }
 
-  wipe(layoutId: string) {
+  wipe() {
+    const db = this.db;
+    const layoutId = this.layoutId;
     async function wipeDcc() {
       const querySnapshot = await getDocs(
         query(

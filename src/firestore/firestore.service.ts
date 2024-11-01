@@ -7,6 +7,11 @@ export class FirestoreService {
   private app: FirebaseApp = null;
   private db: Firestore = null;
 
+  constructor() {
+    console.log('FirestoreService.constructor');
+    this.initiazlize();
+  }
+
   initiazlize() {
     const firebaseConfig = {
       apiKey: process.env.FIREBASE_API_KEY,

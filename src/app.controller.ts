@@ -10,8 +10,7 @@ export class AppController {
     private firestoreService: FirestoreService,
     private dejeCloudService: DejaCloudService,
   ) {
-    this.firestoreService.initiazlize();
-    this.dejeCloudService.connect();
+    // this.dejeCloudService.connect();
   }
 
   @Get()
